@@ -32,9 +32,27 @@ nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;margin:10px auto
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;letter-spacing:1px;text-decoration:none;color:var(--tx)}
 .brand svg{width:40px;height:40px}
 .nl{display:flex;gap:18px}.nl a{color:var(--mu);text-decoration:none;font-weight:600;font-size:.95rem; transition: color 0.3s;}.nl a:hover{color:var(--ac)}
-.ctl{display:flex;gap:6px}
-.ctl button{border:1px solid var(--bd);background:var(--glass);color:var(--tx);padding:6px 11px;border-radius:999px;cursor:pointer;font-weight:700;font-size:.8rem; transition: 0.3s;}
-.ctl button.on{background:var(--ac);color:#111;border-color:var(--ac)}
+.ctl{display:flex;gap:8px; align-items:center;}
+
+/* ستايڵی هەلبژارتنا زمانان */
+#lang-select {
+    background: var(--glass);
+    color: var(--tx);
+    border: 1px solid var(--bd);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}
+#lang-select:focus { border-color: var(--ac); }
+#lang-select option { background: var(--bg2); color: var(--tx); font-weight: bold; }
+
+.ctl button{border:1px solid var(--bd);background:var(--glass);color:var(--tx);padding:6px 11px;border-radius:999px;cursor:pointer;font-weight:700;font-size:.9rem; transition: 0.3s; flex-shrink: 0;}
+.ctl button:hover{border-color:var(--ac); color:var(--ac);}
 
 main{max-width:1200px;margin:0 auto;padding:0 14px 40px}
 .hero{text-align:center;padding:56px 18px;margin-top:14px; animation: slideDownFade 0.8s ease-out;}
@@ -85,7 +103,7 @@ footer{text-align:center;color:var(--mu);padding:26px 14px;font-size:.9rem}
 .animate-card { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
 /* Responsive adjustments */
-@media(max-width:760px){.nl{display:none}.hero{padding:36px 14px}nav{border-radius:24px}}
+@media(max-width:760px){.nl{display:none}.hero{padding:36px 14px}nav{border-radius:24px; padding: 8px 12px;}}
 .brand img{width:42px;height:42px}.hero img{width:120px;height:120px;filter:drop-shadow(0 0 28px rgba(255,214,10,.5))}
 .ct svg{width:38px;height:38px;margin:0 auto 8px;display:block;color:var(--ac);stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .grid{grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr))}
@@ -138,7 +156,16 @@ body[dir="rtl"] #cart-drawer.open { transform:translateX(0); }
 <nav class="glass">
  <a class="brand" href="#top"><img src="images/logo.png" alt="Neetech">NEETECH</a>
  <div class="nl"><a href="#products" data-t="n1"></a><a href="#about" data-t="n2"></a><a href="#contact" data-t="n3"></a></div>
- <div class="ctl"><button data-l="ku">کوردی</button><button data-l="ar">عربي</button><button data-l="en">EN</button><button id="th">◐</button></div>
+ 
+ <!-- ل ئێرە گۆهڕین بۆ هەلبژارتنا زمانان هاتە کرن -->
+ <div class="ctl">
+    <select id="lang-select" aria-label="Select Language">
+        <option value="ku">کوردی</option>
+        <option value="ar">عربي</option>
+        <option value="en">EN</option>
+    </select>
+    <button id="th">◐</button>
+ </div>
 </nav>
 
 <main id="top">
@@ -303,11 +330,19 @@ function setL(l){
  lang=l;var d=document.documentElement;d.lang=l==="ku"?"ckb":l;d.dir=l==="en"?"ltr":"rtl";
  document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=tr(e.getAttribute("data-t"))});
  q.placeholder=tr("sr");
- document.querySelectorAll(".ctl [data-l]").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-l")===l)});
+ 
+ // نوکە ب ڕێکا Dropdown زمان دێ هێتە گۆهڕین
+ var langSelect = document.getElementById("lang-select");
+ if(langSelect) { langSelect.value = l; }
+
  try{localStorage.setItem("nl",l)}catch(e){}
  chipsR();render();updateCart();
 }
-document.querySelectorAll(".ctl [data-l]").forEach(function(b){b.onclick=function(){setL(b.getAttribute("data-l"))}});
+
+// فەنکشنا گۆهڕینا زمانان ب ڕێکا Dropdown
+document.getElementById("lang-select").addEventListener("change", function(e) {
+    setL(e.target.value);
+});
 
 /* ================= 4 Themes Logic (Dark, Light, Ocean, Nature) ================= */
 var themes = ["dark", "light", "ocean", "nature"];
