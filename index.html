@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Neetech – POS Solutions</title>
+<style>
+/* Default (Dark) Theme */
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg1:#05060d;--bg2:#141a33;--glass:rgba(255,255,255,.07);--bd:rgba(255,255,255,.16);--tx:#f4f6ff;--mu:#a9b0cc;--ac:#ffd60a;--sh:0 8px 32px rgba(0,0,0,.4)}
+
+/* Light Theme */
+:root[data-theme="light"]{--bg1:#eef1fb;--bg2:#dfe5fa;--glass:rgba(255,255,255,.55);--bd:rgba(255,255,255,.9);--tx:#12152b;--mu:#4d5575;--ac:#ff9f0a;--sh:0 8px 32px rgba(40,50,110,.15)}
+
+/* Ocean Theme */
+:root[data-theme="ocean"]{--bg1:#041c32;--bg2:#064663;--glass:rgba(255,255,255,.05);--bd:rgba(255,255,255,.12);--tx:#ecf0f1;--mu:#b2bec3;--ac:#00d2d3;--sh:0 8px 32px rgba(0,0,0,.4)}
+
+/* Nature (Green) Theme */
+:root[data-theme="nature"]{--bg1:#112a20;--bg2:#1d593d;--glass:rgba(255,255,255,.06);--bd:rgba(255,255,255,.15);--tx:#e8f8f5;--mu:#a2d9ce;--ac:#2ecc71;--sh:0 8px 32px rgba(0,0,0,.4)}
+
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",Arial,sans-serif;color:var(--tx);background:linear-gradient(135deg,var(--bg1),var(--bg2));background-attachment:fixed;min-height:100vh;overflow-x:hidden; transition: background 0.5s, color 0.5s;}
+
+/* Background Orbs & Animation */
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.45;z-index:-1;animation:fl 14s ease-in-out infinite alternate}
+.o1{width:380px;height:380px;background:#ffd60a;top:-80px;left:-80px;opacity:.25}.o2{width:420px;height:420px;background:#4f6bff;bottom:-100px;right:-100px}.o3{width:260px;height:260px;background:#ff3d9a;top:45%;left:50%;opacity:.2}
+@keyframes fl{to{transform:translate(40px,60px) scale(1.15)}}
+
+.glass{background:var(--glass);border:1px solid var(--bd);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--sh);border-radius:22px; transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;}
+
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;margin:10px auto;max-width:1200px;width:calc(100% - 20px);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;border-radius:999px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;letter-spacing:1px;text-decoration:none;color:var(--tx)}
+.brand svg{width:40px;height:40px}
+.nl{display:flex;gap:18px}.nl a{color:var(--mu);text-decoration:none;font-weight:600;font-size:.95rem; transition: color 0.3s;}.nl a:hover{color:var(--ac)}
+.ctl{display:flex;gap:6px}
+.ctl button{border:1px solid var(--bd);background:var(--glass);color:var(--tx);padding:6px 11px;border-radius:999px;cursor:pointer;font-weight:700;font-size:.8rem; transition: 0.3s;}
+.ctl button.on{background:var(--ac);color:#111;border-color:var(--ac)}
+
+main{max-width:1200px;margin:0 auto;padding:0 14px 40px}
+.hero{text-align:center;padding:56px 18px;margin-top:14px; animation: slideDownFade 0.8s ease-out;}
+.hero svg{width:110px;height:110px;filter:drop-shadow(0 0 28px rgba(255,214,10,.5))}
+.hero h1{font-size:clamp(2rem,6vw,3.8rem);margin:12px 0 6px;line-height:1.15}
+.hero h1 span{background:linear-gradient(90deg,var(--ac),#ff9f0a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:640px;margin:0 auto 22px;color:var(--mu);font-size:1.05rem;line-height:1.8}
+.btn{display:inline-block;padding:12px 26px;border-radius:999px;background:var(--ac);color:#111;font-weight:800;text-decoration:none;margin:4px;border:0;cursor:pointer;font-size:1rem; transition: transform 0.3s;}
+.btn:hover{transform: translateY(-3px);}
+.btn.g{background:var(--glass);color:var(--tx);border:1px solid var(--bd)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:18px 0; animation: slideUpFade 0.8s ease-out;}
+.stats div{padding:18px;text-align:center; transition: transform 0.3s;}
+.stats div:hover{transform: translateY(-5px);}
+.stats b{display:block;font-size:1.9rem;color:var(--ac)}.stats small{color:var(--mu)}
+h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:46px 0 14px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px;margin-bottom:16px}
+.tools input{flex:1;min-width:180px;padding:11px 16px;border-radius:999px;border:1px solid var(--bd);background:var(--glass);color:var(--tx);font-size:1rem;outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 14px;border-radius:999px;border:1px solid var(--bd);background:var(--glass);color:var(--tx);cursor:pointer;font-weight:600;font-size:.88rem; transition: 0.3s;}
+.chip.on{background:var(--ac);color:#111;border-color:var(--ac)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.card{padding:18px;display:flex;flex-direction:column;gap:8px;transition:transform .3s, border-color .3s, box-shadow .3s;}
+.card:hover{transform:translateY(-8px);border-color:var(--ac); box-shadow: 0 15px 35px rgba(0,0,0,0.5);}
+.ic{font-size:2.4rem;height:70px;display:flex;align-items:center;justify-content:center;border-radius:16px;background:linear-gradient(135deg,rgba(255,214,10,.2),rgba(79,107,255,.2))}
+.card h3{margin:4px 0 0;font-size:1.02rem;direction:ltr;text-align:start}
+.tag{font-size:.75rem;color:var(--ac);font-weight:700}
+.sp{color:var(--mu);font-size:.85rem;line-height:1.6;direction:ltr;text-align:start;flex:1}
+.pr{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
+.pr b{font-size:1.4rem;color:var(--ac)}
+
+/* Add to Cart Button */
+.pr button.add-cart{padding:7px 14px;border-radius:999px;background:var(--ac);color:#111;font-weight:700;font-size:.82rem;border:none;cursor:pointer;transition:transform 0.2s, background 0.3s;}
+.pr button.add-cart:hover{transform:scale(1.06);}
+.pr button.add-cart:disabled{background:var(--mu);cursor:not-allowed;transform:none;opacity:0.6;}
+
+.ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.ct a{padding:22px;text-align:center;text-decoration:none;color:var(--tx);font-weight:700; transition: transform 0.3s, border-color 0.3s;}
+.ct a:hover{transform: translateY(-5px); border-color:var(--ac);}
+.ct a span{display:block;font-size:2rem;margin-bottom:6px}.ct small{display:block;color:var(--mu);font-weight:500;margin-top:4px;direction:ltr}
+
+footer{text-align:center;color:var(--mu);padding:26px 14px;font-size:.9rem}
+
+/* Animations Keyframes */
+@keyframes slideDownFade { 0% { opacity: 0; transform: translateY(-30px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes slideUpFade { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
+.animate-card { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Responsive adjustments */
+@media(max-width:760px){.nl{display:none}.hero{padding:36px 14px}nav{border-radius:24px}}
+.brand img{width:42px;height:42px}.hero img{width:120px;height:120px;filter:drop-shadow(0 0 28px rgba(255,214,10,.5))}
+.ct svg{width:38px;height:38px;margin:0 auto 8px;display:block;color:var(--ac);stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.grid{grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr))}
+.card{flex-direction:row;gap:14px}
+.pi{flex:0 0 118px;height:118px;align-self:center;background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pi img{max-width:100%;max-height:100%;object-fit:contain; transition: transform 0.4s ease;}
+.card:hover .pi img{transform: scale(1.12);}
+.cb{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+@media(max-width:420px){.pi{flex-basis:88px;height:88px}.card{padding:14px;gap:10px}}
+
+/* ================= Shopping Cart CSS ================= */
+#cart-fab { position:fixed; bottom:24px; right:24px; width:64px; height:64px; border-radius:50%; font-size:1.6rem; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:99; transition: transform 0.3s; border:1px solid var(--bd); background:var(--glass); color:var(--tx); box-shadow:var(--sh); }
+body[dir="rtl"] #cart-fab { right:auto; left:24px; }
+#cart-fab:hover { transform: scale(1.1); border-color:var(--ac); }
+#cart-badge { position:absolute; top:-4px; right:-4px; background:var(--ac); color:#111; font-size:0.85rem; font-weight:bold; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+@keyframes cartPulse { 0% { transform: scale(1); } 50% { transform: scale(1.12); box-shadow: 0 0 20px var(--ac); } 100% { transform: scale(1); } }
+#cart-fab.pulse { animation: cartPulse 1.5s infinite; border-color:var(--ac); }
+#cart-fab:hover.pulse { animation: none; transform: scale(1.1); }
+
+#cart-drawer { position:fixed; top:0; right:0; width:380px; max-width:100%; height:100vh; background:rgba(20,26,51,0.88); backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px); border-left:1px solid var(--bd); z-index:1000; transform:translateX(100%); transition:transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); display:flex; flex-direction:column; box-shadow:var(--sh); }
+#cart-drawer.open { transform:translateX(0); }
+body[dir="rtl"] #cart-drawer { right:auto; left:0; border-left:none; border-right:1px solid var(--bd); transform:translateX(-100%); }
+body[dir="rtl"] #cart-drawer.open { transform:translateX(0); }
+
+.cart-head { display:flex; justify-content:space-between; align-items:center; padding:20px; border-bottom:1px solid var(--bd); }
+.cart-head h3 { margin:0; font-size:1.3rem; color:var(--tx); }
+.cart-head button { background:transparent; border:none; color:var(--tx); font-size:1.8rem; cursor:pointer; transition: color 0.3s; }
+.cart-head button:hover { color:var(--ac); }
+#cart-items { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; }
+.cart-item { display:flex; gap:12px; align-items:center; background:var(--glass); padding:12px; border-radius:14px; border:1px solid var(--bd); animation: slideUpFade 0.4s ease-out; }
+.cart-item img { width:55px; height:55px; object-fit:contain; border-radius:10px; background:#fff; }
+.cart-item-info { flex:1; }
+.cart-item-info h4 { margin:0 0 6px; font-size:0.9rem; direction:ltr; text-align:start; color:var(--tx); }
+.cart-item-info b { color:var(--ac); font-size:1.05rem; }
+.cart-qty { display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.3); padding:5px 10px; border-radius:99px; }
+.cart-qty button { background:transparent; border:none; color:var(--tx); cursor:pointer; font-weight:bold; font-size:1.2rem; }
+.cart-foot { padding:24px; border-top:1px solid var(--bd); background:rgba(0,0,0,0.2); }
+.cart-total { display:flex; justify-content:space-between; font-size:1.25rem; margin-bottom:18px; color:var(--tx); font-weight:bold; }
+.cart-total b { color:var(--ac); }
+#checkout-btn { width:100%; padding:15px; background:var(--ac); color:#111; border:none; border-radius:99px; font-weight:800; font-size:1.05rem; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; display:flex; align-items:center; justify-content:center; gap:8px;}
+#checkout-btn:hover { transform:scale(1.03); box-shadow: 0 10px 20px rgba(255,214,10,0.2); }
+#cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); z-index:999; opacity:0; pointer-events:none; transition:opacity 0.4s; }
+#cart-overlay.show { opacity:1; pointer-events:auto; }
+.cart-empty { text-align:center; color:var(--mu); margin-top:60px; font-size:1.1rem; }
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<nav class="glass">
+ <a class="brand" href="#top"><img src="images/logo.png" alt="Neetech">NEETECH</a>
+ <div class="nl"><a href="#products" data-t="n1"></a><a href="#about" data-t="n2"></a><a href="#contact" data-t="n3"></a></div>
+ <div class="ctl"><button data-l="ku">کوردی</button><button data-l="ar">عربي</button><button data-l="en">EN</button><button id="th">◐</button></div>
+</nav>
+
+<main id="top">
+ <section class="hero glass">
+  <img src="images/logo.png" alt="Neetech">
+  <h1><span>NEETECH</span><br><small data-t="h1" style="font-size:.45em;font-weight:600"></small></h1>
+  <p data-t="hp"></p>
+  <a class="btn" href="#products" data-t="b1"></a>
+  <a class="btn g" href="https://wa.me/9647519433940" target="_blank" rel="noopener" data-t="b2"></a>
+ </section>
+
+ <div class="stats">
+  <div class="glass"><b>44</b><small data-t="s1"></small></div>
+  <div class="glass"><b>1</b><small data-t="s2"></small></div>
+  <div class="glass"><b>7</b><small data-t="s3"></small></div>
+  <div class="glass"><b>USD</b><small data-t="s4"></small></div>
+ </div>
+
+ <h2 id="products" data-t="n1"></h2>
+ <div class="glass tools"><input id="q" type="search" data-p="sr"><div class="chips" id="chips"></div></div>
+ <div class="grid" id="grid"></div>
+
+ <h2 id="about" data-t="n2"></h2>
+ <div class="glass" style="padding:26px;line-height:1.9;color:var(--mu)" data-t="ab"></div>
+
+ <h2 id="contact" data-t="n3"></h2>
+ <div class="ct">
+ <a class="glass" href="https://wa.me/9647519433940" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 21l1.6-4.7A9 9 0 1 1 8 19.6z"/><path d="M9 8.5c.3 2.5 3.5 5.7 6 6l1.2-1.2-2-1-.9.8c-1-.4-2-1.4-2.4-2.4l.8-.9-1-2z"/></svg>WhatsApp<small>0751 943 3940</small></a>
+ <a class="glass" href="https://neetech-iq.com" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>Website<small>neetech-iq.com</small></a>
+ <a class="glass" href="https://www.instagram.com/neetech_co" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6"/></svg>Instagram<small>@Neetech_co</small></a>
+ <a class="glass" href="https://www.tiktok.com/@neetech_co" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.5 2.2 4 5 4.2"/></svg>TikTok<small>@Neetech_co</small></a>
+ <a class="glass" href="#contact"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><i data-t="loc" style="font-style:normal"></i><small>Duhok, Nohadra</small></a>
+ </div>
+</main>
+<footer>©️ 2026 Neetech — Enter The Future · Your Smart Shortcut</footer>
+
+<!-- Shopping Cart UI -->
+<button id="cart-fab" class="glass" onclick="toggleCart()" aria-label="Cart">
+    🛒 <span id="cart-badge">0</span>
+</button>
+
+<div id="cart-overlay" onclick="toggleCart()"></div>
+
+<div id="cart-drawer" class="glass">
+    <div class="cart-head">
+        <h3 data-t="cart_title"></h3>
+        <button onclick="toggleCart()">✕</button>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-foot">
+        <div class="cart-total">
+            <span data-t="cart_total"></span> <b id="cart-sum">$0</b>
+        </div>
+        <button id="checkout-btn" onclick="checkout()">
+            <svg style="width:22px;height:22px;" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 6.46 17.5 2 12.04 2M12.05 19.83C10.57 19.83 9.15 19.43 7.9 18.7L7.6 18.52L4.5 19.33L5.33 16.29L5.14 15.97C4.34 14.71 3.93 13.25 3.94 11.75C3.95 7.29 7.58 3.65 12.06 3.65C14.23 3.65 16.26 4.49 17.79 6.03C19.33 7.57 20.17 9.61 20.17 11.77C20.17 16.23 16.54 19.83 12.05 19.83M16.5 13.72C16.26 13.59 15.06 13 14.83 12.92C14.6 12.83 14.44 12.79 14.28 13.04C14.12 13.29 13.66 13.84 13.52 14C13.38 14.16 13.24 14.18 13 14.06C12.76 13.94 11.97 13.68 11.04 12.85C10.3 12.2 9.8 11.39 9.66 11.15C9.52 10.91 9.64 10.78 9.77 10.66C9.88 10.55 10.02 10.37 10.14 10.23C10.26 10.09 10.3 9.97 10.38 9.81C10.46 9.65 10.42 9.53 10.36 9.41C10.3 9.29 9.8 8.08 9.6 7.58C9.4 7.1 9.19 7.15 9.04 7.15C8.89 7.15 8.73 7.15 8.57 7.15C8.41 7.15 8.16 7.21 7.95 7.43C7.74 7.65 7.14 8.21 7.14 9.35C7.14 10.49 7.97 11.59 8.1 11.75C8.22 11.91 9.73 14.25 12.06 15.26C12.61 15.5 13.06 15.65 13.41 15.76C13.97 15.94 14.47 15.9 14.88 15.84C15.34 15.77 16.29 15.26 16.49 14.71C16.69 14.16 16.69 13.7 16.63 13.6C16.57 13.5 16.41 13.44 16.17 13.32Z"/></svg>
+            <span data-t="cart_checkout" style="margin-inline-start:8px"></span>
+        </button>
+    </div>
+</div>
+
+<script>
+var T={
+ku:{n1:"بەرهەم",n2:"دەربارەی مە",n3:"پەیوەندی",h1:"سیستەمێن POS و تەکنەلۆجیایا فرۆتنگەهان",hp:"مە سیستەمێن POS، سکانەر، پرینتەر، تەرازی و کەرەستەیێن فرۆتنگەهان ب کوالیتیەکا بلند و بهایێ باش و گارەنتیا ساڵەکێ پێشکێش دکەین.",b1:"بەرهەمان ببینە",b2:"پەیوەندی ب واتسئاپ",s1:"بەرهەم",s2:"ساڵ گارەنتی",s3:"پۆل",s4:"بها ب دۆلار",sr:"گەڕان...",all:"هەمی",c1:"سیستەمێن POS",c2:"پرایس چێکەر",c3:"سکانەر",c4:"تەرازی",c5:"پرینتەر",c6:"کاشێر دراوەر",c7:"چاوەڕوانی و دەستی",call:"پەیوەندی بکە بو بها",out:"نەماوە",ask:"داخوازی",ab:"Neetech کۆمپانیایەکا پسپۆرە د بواری سیستەمێن POS و کەرەستەیێن فرۆتنگەهان دا. هەمی بەرهەمێن مە ب گارەنتی و پشتەڤانیا تەکنیکی ڤە دهێن، و دراوەر دەستپشتی دینارا عێراقی دکەت.",loc:"دهۆک، نوهەدرا",
+cart_title:"سەلکا کرینێ",cart_empty:"سەلکا تە یا ڤالایە!",cart_total:"سەرجەم:",cart_checkout:"داخوازکرن ب WhatsApp"},
+ar:{n1:"المنتجات",n2:"من نحن",n3:"تواصل معنا",h1:"أنظمة نقاط البيع وتقنيات المتاجر",hp:"نوفر أنظمة نقاط البيع والماسحات والطابعات والموازين ومستلزمات المتاجر بجودة عالية وأسعار منافسة وضمان سنة.",b1:"تصفح المنتجات",b2:"تواصل عبر واتساب",s1:"منتج",s2:"سنة ضمان",s3:"أقسام",s4:"الأسعار بالدولار",sr:"بحث...",all:"الكل",c1:"أنظمة POS",c2:"فاحص الأسعار",c3:"ماسحات الباركود",c4:"الموازين",c5:"الطابعات",c6:"أدراج النقد",c7:"الاستدعاء والمحمول",call:"اتصل للسعر",out:"نفدت الكمية",ask:"اطلب",ab:"نيتك شركة متخصصة في أنظمة نقاط البيع ومستلزمات المتاجر. جميع منتجاتنا تأتي مع ضمان ودعم فني، وأدراج النقد تدعم الدينار العراقي بالكامل.",loc:"دهوك، نوهدرا",
+cart_title:"سلة المشتريات",cart_empty:"سلتك فارغة!",cart_total:"المجموع:",cart_checkout:"إتمام الطلب عبر واتساب"},
+en:{n1:"Products",n2:"About",n3:"Contact",h1:"POS Systems & Retail Technology",hp:"Professional POS terminals, scanners, printers, scales and retail equipment — premium quality, competitive prices and one-year warranty.",b1:"Browse Products",b2:"Chat on WhatsApp",s1:"Products",s2:"Year Warranty",s3:"Categories",s4:"Prices in USD",sr:"Search...",all:"All",c1:"POS Systems",c2:"Price Checkers",c3:"Scanners",c4:"Scales",c5:"Printers",c6:"Cash Drawers",c7:"Calling & Handheld",call:"Call for Price",out:"Out of Stock",ask:"Order",ab:"Neetech is a specialist in POS systems and retail hardware. Every product comes with warranty and technical support, and our cash drawers fully support Iraqi Dinar.",loc:"Duhok, Nohadra",
+cart_title:"Shopping Cart",cart_empty:"Your cart is empty!",cart_total:"Total:",cart_checkout:"Checkout via WhatsApp"}
+};
+var I=["🖥️","🏷️","📷","⚖️","🖨️","💵","🔔"];
+var A=" i5 · 8GB RAM · 256GB SSD · 15.6\" Touch · Metal + Aluminum base · Speaker + Wi-Fi · 1-yr warranty";
+var P=[
+[1,"VOOX Dual Screen NT-VPX15-WSP-D001 (5th Gen)","Dual 15.6\" + 15.6\" display."+A,425],
+[1,"VOOX Dual Screen NT-VPX15-WSP-D001 (6th Gen)","Dual 15.6\" + 15.6\" display."+A,455],
+[1,"VOOX Dual Screen NT-VPX15-WSP-D001 (7th Gen)","Dual 15.6\" + 15.6\" display."+A,495],
+[1,"VOOX Dual Screen NT-VPX15-WSP-D001 (8th Gen)","Dual 15.6\" + 15.6\" display."+A,535],
+[1,"VOOX Single Screen NT-VPX15-WSP-S001 (5th Gen)","Single screen."+A,400],
+[1,"VOOX Single Screen NT-VPX15-WSP-S001 (6th Gen)","Single screen."+A,420],
+[1,"VOOX Single Screen Pro S001 (7th Gen)","Single screen."+A,445],
+[1,"VOOX Single Screen Pro S001 (8th Gen)","Single screen."+A,485],
+[1,"VOOX POS AIO Modern Black","i5 5th · 8GB · 128GB SSD · 15.6\" Touch + 11.6\" secondary · Speaker + Wi-Fi",425],
+[1,"VOOX POS AIO Modern Silver","i5 5th · 8GB · 128GB SSD · 15.6\" Touch + 11.6\" secondary",-1],
+[1,"PEEX Rx-627 Single Screen (Silver / Black / White)","i5 6th · 8GB · 256GB SSD · 15.6\" Touch · 1-yr warranty",420],
+[1,"PEEX Rx-627 Double Screen (Silver / Black / White)","i5 6th · 8GB · 256GB SSD · 15.6\" Touch + 11.6\" Non-touch",455],
+[1,"POS AIO Digital Customer Display Edition","i5 4th · 8GB · 256GB SSD · 15.6\" Touch · Integrated digital screen",390],
+[2,"POS AIO Price Check System","Intel i3 · 4GB · 128GB SSD · 10.1\" Touch · Wi-Fi · 1D/2D scanner",300],
+[2,"VOOX Price Checker POS-VOOX","Win 11 · i5 6th · 8GB DDR4 · 128GB SSD · 10.1\" Touch · Wi-Fi · speaker · 1D/2D scanner",395],
+[2,"POS AIO Price Check POS-L13","Win 11 · Celeron J6412 · 8GB DDR4 · 128GB SSD · 10.1\" Touch · Wi-Fi",350],
+[6,"X-Printer-Duty Cash Drawer 6kg","Steel · RJ11/RJ12 12V/24V · Iraqi Dinar layout · 3-position lock",39],
+[6,"Heavy-Duty Cash Drawer 6.5kg","Steel 6.25kg · RJ11/RJ12 12V/24V · Iraqi Dinar layout · 3-position lock",43],
+[3,"VOOX Scanner T98","Desktop omnidirectional · 1D/2D · 120 FPS · 1-yr warranty",85],
+[3,"VOOX Scanner HC-T10","Handheld wired · 1D/2D/QR · 120 FPS · USB · 1-yr warranty",95],
+[3,"VOOX Scanner HC-T560","Wired · 1D/2D/QR · 120 FPS · USB plug & play · 1-yr warranty",45],
+[3,"VOOX GT-T3501C (Black / White)","Bluetooth wireless · 2D · charging stand · 1-yr warranty",38],
+[3,"VOOX X-9301C","1D/2D · 1.0GHz MCU · 120 FPS · USB 1.8m · 1-yr warranty",38],
+[3,"VOOX 2D-XB-8505","2D omnidirectional area imager · USB · integrated base · 1-yr warranty",50],
+[3,"VOOX X-T30e","Hands-free presentation scanner · 1D/2D · 1-yr warranty",40],
+[4,"TMC Scale 30KG","30kg · dual-side display · tare/zero · stainless platform · rechargeable battery",265],
+[4,"RONGTA Digital Retail Scale","Label printer support · dual display · multi-PLU · Ethernet / cash drawer",345],
+[5,"X-printer T80Q Receipt","Direct thermal · auto-cutter · USB + Serial",36],
+[5,"PrinterXP-801A Portable","80mm · 100mm/s · 203DPI · Bluetooth + USB-C · rechargeable",50],
+[5,"PrinterXP-802A Portable 3\"","58/80mm · Bluetooth + USB · QR & barcode · ESC/POS",55],
+[5,"ZJ-9260U Sticker Printer (White / Black)","USB + Bluetooth · direct thermal · integrated roll holder",50],
+[5,"XP-424B Sticker Printer","4\" thermal label · 203DPI · 127mm/s · TSPL/ZPL/EPL/DPL",0],
+[5,"X printer XP-480B USB","4\" label · 203DPI · 152mm/s · Windows/Linux/Mac",70],
+[5,"X printer XP-480B USB + Bluetooth","4\" label · 203DPI · 152mm/s · Windows/Android/iOS",90],
+[5,"Printer M110 Bluetooth","Mobile receipt + label · 58mm · USB + Bluetooth · rechargeable",0],
+[5,"Xprinter 365B Thermal Label","Direct thermal · compact desktop · inkless",46],
+[5,"X-printer 365B Bluetooth Edition","Direct thermal · compact desktop · Bluetooth",60],
+[7,"Handheld POS H10P","Octa-core 2.3GHz · Android 14 GO · 3GB+32GB · 5.5\" · 58mm printer · 4G/NFC/GPS",0],
+[7,"Handheld POS H10P + Scanner","As H10P with Newland barcode scanner included",0],
+[7,"Wireless Calling System QC160","20 sub-devices · up to 998 · 500m range",95],
+[7,"Touch Five-Key Button","Wireless calling · 315/433MHz · queue management",15],
+[7,"Wireless Calling System R100","315MHz · 500m · up to 999 devices · waterproof",110],
+[7,"Calling Display Unit LJL-T880","Caller number display · 500 callers · 16-level volume",55],
+[7,"Wireless Calling Pager Receiver","433.92MHz · 450mAh · watch style",55]
+];
+var IM=["d5", "d6", "d7", "d8", "s5", "s6", "s7", "s8", "mblack", "msilver", "peex1", "peex2", "digital", "pc1", "pc2", "pc3", "drawer1", "drawer2", "t98", "hct10", "hct560", "gt3501", "x9301", "xb8505", "xt30e", "tmc", "rongta", "t80q", "p801", "p802", "zj", "xp424", "xp480", "xp480bt", "m110", "l365", "l365bt", "h10p", "h10ps", "qc160", "five", "r100", "ljl", "pager"];
+function src(n){return "images/"+n+".jpg"}
+var lang="ku",cat=0,box=document.getElementById("grid"),chips=document.getElementById("chips"),q=document.getElementById("q");
+
+function tr(k){return T[lang][k]}
+
+function render(){
+ var s=q.value.toLowerCase(),h="";
+ var renderCount = 0;
+ P.forEach(function(p,i){
+  if(cat&&p[0]!=cat)return;
+  if(s&&(p[1]+p[2]).toLowerCase().indexOf(s)<0)return;
+  var pr=p[3]>0?"$"+p[3]:(p[3]<0?tr("out"):tr("call"));
+  var btnState = p[3] < 0 ? 'disabled' : '';
+  
+  // لڤینا جوان (Animation Delay) ل سەر هەر کارتەکێ دهێتە ڕێکخستن
+  var delay = (renderCount % 12) * 0.05;
+  renderCount++;
+  
+  h+=`<div class="glass card animate-card" style="animation-delay:${delay}s">
+        <div class="pi"><img loading="lazy" alt="${p[1]}" src="${src(IM[i])}"></div>
+        <div class="cb">
+            <span class="tag">${tr("c"+p[0])}</span>
+            <h3>${p[1]}</h3>
+            <div class="sp">${p[2]}</div>
+            <div class="pr">
+                <b${p[3]<=0?' style="font-size:1rem"':''}>${pr}</b>
+                <button class="add-cart" onclick="addToCart(${i})" ${btnState}>${tr("ask")}</button>
+            </div>
+        </div>
+      </div>`;
+ });
+ box.innerHTML=h;
+}
+
+function chipsR(){
+ var h='<button class="chip'+(cat?'':' on')+'" data-c="0">'+tr("all")+'</button>';
+ for(var i=1;i<=7;i++)h+='<button class="chip'+(cat==i?' on':'')+'" data-c="'+i+'">'+tr("c"+i)+'</button>';
+ chips.innerHTML=h;
+}
+chips.onclick=function(e){var c=e.target.getAttribute("data-c");if(c!==null){cat=+c;chipsR();render()}};
+q.oninput=render;
+
+function setL(l){
+ lang=l;var d=document.documentElement;d.lang=l==="ku"?"ckb":l;d.dir=l==="en"?"ltr":"rtl";
+ document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=tr(e.getAttribute("data-t"))});
+ q.placeholder=tr("sr");
+ document.querySelectorAll(".ctl [data-l]").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-l")===l)});
+ try{localStorage.setItem("nl",l)}catch(e){}
+ chipsR();render();updateCart();
+}
+document.querySelectorAll(".ctl [data-l]").forEach(function(b){b.onclick=function(){setL(b.getAttribute("data-l"))}});
+
+/* ================= 4 Themes Logic (Dark, Light, Ocean, Nature) ================= */
+var themes = ["dark", "light", "ocean", "nature"];
+var themeIcons = ["◐", "☼", "🌊", "🌿"];
+var tIdx = 0;
+document.getElementById("th").onclick=function(){
+    tIdx = (tIdx + 1) % themes.length;
+    var t = themes[tIdx];
+    document.documentElement.setAttribute("data-theme", t);
+    this.innerText = themeIcons[tIdx];
+};
+
+var s0="ku";try{s0=localStorage.getItem("nl")||"ku"}catch(e){}
+setL(T[s0]?s0:"ku");
+
+/* ================= Shopping Cart Logic ================= */
+var cart = {};
+
+function toggleCart() {
+    document.getElementById("cart-drawer").classList.toggle("open");
+    document.getElementById("cart-overlay").classList.toggle("show");
+}
+
+function addToCart(idx) {
+    if (P[idx][3] < 0) return; // Out of stock
+    cart[idx] = (cart[idx] || 0) + 1;
+    updateCart();
+}
+
+function changeQty(idx, delta) {
+    if(!cart[idx]) return;
+    cart[idx] += delta;
+    if(cart[idx] <= 0) delete cart[idx];
+    updateCart();
+}
+
+function updateCart() {
+    var count = 0;
+    var total = 0;
+    var html = "";
+    
+    for(var idx in cart){
+        var item = P[idx];
+        var q = cart[idx];
+        count += q;
+        var price = item[3];
+        var tPrice = price > 0 ? price * q : 0;
+        total += tPrice;
+        
+        var priceText = price > 0 ? "$" + tPrice : tr("call");
+        
+        html += `<div class="cart-item">
+                  <img src="${src(IM[idx])}" alt="">
+                  <div class="cart-item-info">
+                      <h4>${item[1]}</h4>
+                      <b>${priceText}</b>
+                  </div>
+                  <div class="cart-qty">
+                      <button onclick="changeQty(${idx}, -1)">-</button>
+                      <span>${q}</span>
+                      <button onclick="changeQty(${idx}, 1)">+</button>
+                  </div>
+                </div>`;
+    }
+    
+    if(count === 0) {
+        html = `<div class="cart-empty">${tr("cart_empty")}</div>`;
+    }
+    
+    document.getElementById("cart-items").innerHTML = html;
+    document.getElementById("cart-badge").innerText = count;
+    document.getElementById("cart-sum").innerText = "$" + total;
+    
+    if(count > 0) {
+        document.getElementById("cart-fab").classList.add("pulse");
+    } else {
+        document.getElementById("cart-fab").classList.remove("pulse");
+    }
+}
+
+function checkout() {
+    if(Object.keys(cart).length === 0) return;
+    
+    var txt = "سلاو، من ئەڤ بەرهەمە دڤێن:\n\n";
+    if(lang === "ar") txt = "مرحباً، أود طلب المنتجات التالية:\n\n";
+    if(lang === "en") txt = "Hello, I would like to order:\n\n";
+    
+    var total = 0;
+    for(var i in cart){
+        var item = P[i];
+        var qty = cart[i];
+        var price = item[3];
+        var itemTotal = price > 0 ? price * qty : 0;
+        total += itemTotal;
+        var priceStr = price > 0 ? " ($"+itemTotal+")" : " ("+tr("call")+")";
+        txt += "▪️ " + qty + "x " + item[1] + priceStr + "\n";
+    }
+    
+    txt += "\n" + tr("cart_total") + " $" + total;
+    
+    window.open('https://wa.me/9647519433940?text=' + encodeURIComponent(txt), '_blank');
+}
+</script>
+</body>
+</html>
